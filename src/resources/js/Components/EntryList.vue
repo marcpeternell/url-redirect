@@ -14,7 +14,6 @@
         </table>
       </div>
     </div>
-    <nothing-here></nothing-here>
   </div>
 
 </template>
@@ -25,7 +24,6 @@ import TableHead from "./TableHead";
 import TagStatus from "./TagStatus";
 import TableSearchBar from "./TableSearchBar";
 import ModalDeleteEntry from "./ModalDeleteEntry";
-import NothingHere from "./NothingHere";
 
 export default {
   name: "EntryList",
@@ -35,7 +33,6 @@ export default {
     TableHead,
     TableSearchBar,
     ModalDeleteEntry,
-    NothingHere
   },
   props: {
     data: Array

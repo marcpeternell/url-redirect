@@ -2037,7 +2037,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TagStatus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TagStatus */ "./resources/js/Components/TagStatus.vue");
 /* harmony import */ var _TableSearchBar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TableSearchBar */ "./resources/js/Components/TableSearchBar.vue");
 /* harmony import */ var _ModalDeleteEntry__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ModalDeleteEntry */ "./resources/js/Components/ModalDeleteEntry.vue");
-/* harmony import */ var _NothingHere__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./NothingHere */ "./resources/js/Components/NothingHere.vue");
 //
 //
 //
@@ -2058,8 +2057,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-
 
 
 
@@ -2072,8 +2069,7 @@ __webpack_require__.r(__webpack_exports__);
     TagStatus: _TagStatus__WEBPACK_IMPORTED_MODULE_2__["default"],
     TableHead: _TableHead__WEBPACK_IMPORTED_MODULE_1__["default"],
     TableSearchBar: _TableSearchBar__WEBPACK_IMPORTED_MODULE_3__["default"],
-    ModalDeleteEntry: _ModalDeleteEntry__WEBPACK_IMPORTED_MODULE_4__["default"],
-    NothingHere: _NothingHere__WEBPACK_IMPORTED_MODULE_5__["default"]
+    ModalDeleteEntry: _ModalDeleteEntry__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   props: {
     data: Array
@@ -4069,6 +4065,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
 /* harmony import */ var _Components_EntryForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Components/EntryForm */ "./resources/js/Components/EntryForm.vue");
 /* harmony import */ var _Components_EntryList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Components/EntryList */ "./resources/js/Components/EntryList.vue");
+/* harmony import */ var _Components_NothingHere__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Components/NothingHere */ "./resources/js/Components/NothingHere.vue");
 //
 //
 //
@@ -4092,6 +4089,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 
@@ -4099,7 +4098,8 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     EntryForm: _Components_EntryForm__WEBPACK_IMPORTED_MODULE_1__["default"],
-    EntryList: _Components_EntryList__WEBPACK_IMPORTED_MODULE_2__["default"]
+    EntryList: _Components_EntryList__WEBPACK_IMPORTED_MODULE_2__["default"],
+    NothingHere: _Components_NothingHere__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: ['data', 'errors'],
   data: function data() {
@@ -45478,54 +45478,48 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _vm.data.length > 0
-        ? _c(
-            "div",
-            { staticClass: "overflow-x-auto" },
-            [
-              _c("table-search-bar"),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "align-middle inline-block min-w-full overflow-hidden bg-white px-8 pt-3 rounded-bl-lg rounded-br-lg"
-                },
-                [
-                  _c("table", { staticClass: "min-w-full" }, [
-                    _c("thead", [_c("table-head")], 1),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      { staticClass: "bg-white" },
-                      _vm._l(_vm.data, function(item) {
-                        return _c("table-row", {
-                          key: item.id,
-                          attrs: {
-                            id: item.id,
-                            tag: item.tag,
-                            redirect_url: item.redirect_url,
-                            status: item.active
-                          }
-                        })
-                      }),
-                      1
-                    )
-                  ])
-                ]
-              )
-            ],
-            1
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("nothing-here")
-    ],
-    1
-  )
+  return _c("div", [
+    _vm.data.length > 0
+      ? _c(
+          "div",
+          { staticClass: "overflow-x-auto" },
+          [
+            _c("table-search-bar"),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "align-middle inline-block min-w-full overflow-hidden bg-white px-8 pt-3 rounded-bl-lg rounded-br-lg"
+              },
+              [
+                _c("table", { staticClass: "min-w-full" }, [
+                  _c("thead", [_c("table-head")], 1),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    { staticClass: "bg-white" },
+                    _vm._l(_vm.data, function(item) {
+                      return _c("table-row", {
+                        key: item.id,
+                        attrs: {
+                          id: item.id,
+                          tag: item.tag,
+                          redirect_url: item.redirect_url,
+                          status: item.active
+                        }
+                      })
+                    }),
+                    1
+                  )
+                ])
+              ]
+            )
+          ],
+          1
+        )
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -49702,7 +49696,11 @@ var render = function() {
             staticClass:
               "bg-white overflow-hidden shadow-xl sm:rounded-lg bg-white overflow-hidden shadow-xl sm:rounded-lg sm:px-20 sm:py-10 bg-white border-b border-gray-200"
           },
-          [_c("entry-list", { attrs: { data: _vm.data } })],
+          [
+            typeof _vm.data !== "undefined" && _vm.data.length > 0
+              ? _c("entry-list", { attrs: { data: _vm.data } })
+              : _c("nothing-here")
+          ],
           1
         )
       ])
