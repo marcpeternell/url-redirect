@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+require('mix-tailwindcss');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,8 +13,7 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        require('postcss-import'),
-        require('tailwindcss'),
-    ])
+    .tailwind('./tailwind.config.js')
+    .sass('resources/sass/app.scss', 'public/css')
+    .copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')
     .webpackConfig(require('./webpack.config'));
