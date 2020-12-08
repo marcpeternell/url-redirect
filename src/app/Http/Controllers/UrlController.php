@@ -3,18 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Url;
-use BaconQrCode\Encoder\QrCode;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\LabelAlignment;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Response\QrCodeResponse;
 
 class UrlController extends Controller
 {
 
     private $rules = [
-        'tag' => 'required|max:255|unique:redirects|min:3',
-        'redirect_url' => 'required|unique:redirects|min:3',
+        'tag' => 'required|max:255|unique:urls|min:3',
+        'redirect_url' => 'required|min:3',
     ];
 
     private $updateRules = [
@@ -31,13 +35,18 @@ class UrlController extends Controller
      */
     public function store(Request $request)
     {
-        Validator::make($request->all(), $this->rules )->validate();
+        Validator::make($request->all(), $this->rules)->validate();
 
-        Url::create($request->all());
+        $path = $this->generateQR($request->redirect_url, $request->tag);
+
+        Url::create([
+            'tag' => $request->tag,
+            'redirect_url' => $request->redirect_url,
+            'qr_code' => $path
+        ]);
 
         return redirect()->back()
             ->with('message', 'Url Created Successfully.');
-
     }
 
     /**
@@ -49,7 +58,7 @@ class UrlController extends Controller
      */
     public function update(Request $request)
     {
-        Validator::make($request->all(),$this->updateRules)->validate();
+        Validator::make($request->all(), $this->updateRules)->validate();
 
         if ($request->has('id')) {
             Url::find($request->input('id'))->update($request->all());
@@ -70,6 +79,36 @@ class UrlController extends Controller
             Url::find($request->input('id'))->delete();
             return redirect()->back();
         }
+    }
+
+    private function generateQR($url, $tag)
+    {
+        // Create a basic QR code
+        $qrCode = new QrCode($url);
+        $qrCode->setSize(300);
+        $qrCode->setMargin(10);
+
+        // Set advanced options
+        $qrCode->setWriterByName('png');
+        $qrCode->setEncoding('UTF-8');
+        $qrCode->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH());
+        $qrCode->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0, 'a' => 0]);
+        $qrCode->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255, 'a' => 0]);
+
+        // Round block sizes to improve readability and make the blocks sharper in pixel based outputs (like png).
+        // There are three approaches:
+        $qrCode->setRoundBlockSize(true, QrCode::ROUND_BLOCK_SIZE_MODE_MARGIN); // The size of the qr code is shrinked, if necessary, but the size of the final image remains unchanged due to additional margin being added (default)
+        $qrCode->setRoundBlockSize(true, QrCode::ROUND_BLOCK_SIZE_MODE_ENLARGE); // The size of the qr code and the final image is enlarged, if necessary
+        $qrCode->setRoundBlockSize(true, QrCode::ROUND_BLOCK_SIZE_MODE_SHRINK); // The size of the qr code and the final image is shrinked, if necessary
+
+        // Set additional writer options (SvgWriter example)
+        $qrCode->setWriterOptions(['exclude_xml_declaration' => true]);
+
+        // Save it to a file
+        $path = '/images/qr_code/'. now()->timestamp . '_' . $tag .'.png';
+        $qrCode->writeFile(public_path($path));
+
+        return $path;
     }
 
 }
