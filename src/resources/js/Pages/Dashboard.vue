@@ -60,7 +60,7 @@ export default {
     },
     save: function (data) {
       console.log('saving')
-      this.$inertia.post('/redirect', data)
+      this.$inertia.post('/url', data)
       this.reset();
       this.closeModal();
       this.editMode = false;
@@ -72,7 +72,7 @@ export default {
     },
     update: function (data) {
       data._method = 'PUT';
-      this.$inertia.post('/redirect/' + data.id, data)
+      this.$inertia.post('/url/' + data.id, data)
       this.reset();
       this.closeModal();
     },

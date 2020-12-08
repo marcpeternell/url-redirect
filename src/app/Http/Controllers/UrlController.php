@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Redirect;
+use App\Models\Url;
 use BaconQrCode\Encoder\QrCode;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class RedirectController extends Controller
+class UrlController extends Controller
 {
 
     private $rules = [
@@ -32,16 +31,9 @@ class RedirectController extends Controller
      */
     public function store(Request $request)
     {
-        $image = QrCode::format('png')
-            ->merge('img/t.jpg', 0.1, true)
-            ->size(200)->errorCorrection('H')
-            ->generate('A simple example of QR code!');
-        $output_file = '/img/qr-code/img-' . time() . '.png';
-        Storage::disk('local')->put($output_file, $image);
-
         Validator::make($request->all(), $this->rules )->validate();
 
-        Redirect::create($request->all());
+        Url::create($request->all());
 
         return redirect()->back()
             ->with('message', 'Url Created Successfully.');
@@ -60,7 +52,7 @@ class RedirectController extends Controller
         Validator::make($request->all(),$this->updateRules)->validate();
 
         if ($request->has('id')) {
-            Redirect::find($request->input('id'))->update($request->all());
+            Url::find($request->input('id'))->update($request->all());
             return redirect()->back()
                 ->with('message', 'Url Updated Successfully.');
         }
@@ -75,7 +67,7 @@ class RedirectController extends Controller
     public function destroy(Request $request)
     {
         if ($request->has('id')) {
-            Redirect::find($request->input('id'))->delete();
+            Url::find($request->input('id'))->delete();
             return redirect()->back();
         }
     }

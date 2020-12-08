@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Redirect;
+use App\Models\Url;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -15,7 +15,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $data = Redirect::all();
+        $data = Url::all();
 
         return Inertia::render('Dashboard', ['data' => $data]);
     }

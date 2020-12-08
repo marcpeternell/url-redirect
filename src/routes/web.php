@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,5 +19,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('/', DashboardController::class)->only([
         'index'
     ]);
-    Route::resource('redirect', RedirectController::class);
+    Route::resource('url', UrlController::class);
 });

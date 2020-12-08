@@ -75,7 +75,7 @@ export default {
       }
     },
     save: function (data) {
-      this.$inertia.post('/redirect', data);
+      this.$inertia.post('/url', data);
       this.reset();
     },
   },

@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     updateElement: function (data) {
-      this.form.put('/redirect/' + data.id, data, {
+      this.form.put('/url/' + data.id, data, {
         preserveScroll: true,
         onSuccess: () => {
           this.showEditForm = false;

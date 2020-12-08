@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class RedirectSeeder extends Seeder
+class UrlSeeder extends Seeder
 {
     /**
      * Run the database seeds.
