@@ -29,7 +29,7 @@
             </jet-action-message>
 
             <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-              Add
+              <i class="fas fa-plus mr-1"></i> Add
             </jet-button>
           </template>
         </jet-form-section>
