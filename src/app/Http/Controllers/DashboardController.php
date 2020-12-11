@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Url;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -13,10 +14,12 @@ class DashboardController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Url::all();
-
-        return Inertia::render('Dashboard', ['data' => $data]);
+        return Inertia::render('Dashboard',[
+            'data' => Url::when($request->search, function ($query, $term) {
+                $query->where('tag', 'LIKE', '%' . $term .'%');
+            })->orderBy('id', 'DESC')->paginate(25)
+        ]);
     }
 }

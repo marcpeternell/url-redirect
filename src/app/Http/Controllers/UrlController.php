@@ -36,7 +36,9 @@ class UrlController extends Controller
     {
         Validator::make($request->all(), $this->rules)->validate();
 
-        $path = $this->generateQR($request->redirect_url, $request->tag);
+        $qrUrl = url('/tag') . '/' .$request->tag;
+
+        $path = $this->generateQR($qrUrl, $request->tag);
 
         Url::create([
             'tag' => $request->tag,
@@ -89,7 +91,7 @@ class UrlController extends Controller
      */
     public function tag($tag)
     {
-        $urlQuery = Url::where('tag', $tag);
+        $urlQuery = Url::where('tag', $tag)->where('active', true);
 
         if (empty($urlQuery->first())) {
             abort(404);

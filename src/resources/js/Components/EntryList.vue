@@ -1,8 +1,9 @@
 <template>
   <div>
-    <div class="overflow-x-auto" v-if="data.length > 0">
-      <table-search-bar></table-search-bar>
-      <div class="align-middle inline-block min-w-full overflow-hidden bg-white px-8 pt-3 rounded-bl-lg rounded-br-lg">
+    <div class="overflow-x-auto">
+
+      <div v-if="typeof data !== 'undefined' && data.length > 0"
+           class="align-middle inline-block min-w-full overflow-hidden bg-white px-8 pt-3 rounded-bl-lg rounded-br-lg">
         <table class="min-w-full">
           <thead>
           <table-head></table-head>
@@ -13,6 +14,7 @@
           </tbody>
         </table>
       </div>
+      <nothing-here v-else></nothing-here>
     </div>
   </div>
 
@@ -22,11 +24,9 @@
 import TableRow from "./TableRow";
 import TableHead from "./TableHead";
 import TagStatus from "./TagStatus";
-import TableSearchBar from "./TableSearchBar";
+
 import ModalDeleteEntry from "./ModalDeleteEntry";
-import JetDialogModal from '@/Jetstream/DialogModal';
-import JetSecondaryButton from '@/Jetstream/SecondaryButton';
-import JetButton from '@/Jetstream/Button';
+import NothingHere from "./NothingHere";
 
 export default {
   name: "EntryList",
@@ -34,8 +34,9 @@ export default {
     TableRow,
     TagStatus,
     TableHead,
-    TableSearchBar,
+
     ModalDeleteEntry,
+    NothingHere
   },
   props: {
     data: Array
@@ -43,7 +44,6 @@ export default {
   data() {
     return {}
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>

@@ -11,9 +11,11 @@ require('mix-tailwindcss');
  | file for the application as well as bundling up all the JS files.
  |
  */
+let productionSourceMaps = false;
 
 mix.js('resources/js/app.js', 'public/js')
     .tailwind('./tailwind.config.js')
     .sass('resources/sass/app.scss', 'public/css')
     .copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')
-    .webpackConfig(require('./webpack.config'));
+    .webpackConfig(require('./webpack.config'))
+    .sourceMaps(productionSourceMaps, 'source-map');

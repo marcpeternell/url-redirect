@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Url;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class UrlFactory extends Factory
 {
@@ -22,7 +23,11 @@ class UrlFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'tag' => $this->faker->firstName,
+            'redirect_url' => $this->faker->unique()->url,
+            'qr_code' => $this->faker->unique()->imageUrl(),
+            'visits' => $this->faker->numberBetween(1, 100),
+            'active' => $this->faker->numberBetween(0,1),
         ];
     }
 }

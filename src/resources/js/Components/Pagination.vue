@@ -1,33 +1,38 @@
 <template>
-  <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
+  <div class="flex items-center justify-center mt-4 work-sans">
     <div>
-      <nav class="relative z-0 inline-flex shadow-sm">
-        <pagination-prev></pagination-prev>
-        <div>
-          <pagination-link>1</pagination-link>
-          <pagination-link>2</pagination-link>
-          <pagination-link>3</pagination-link>
-        </div>
-        <pagination-next></pagination-next>
-      </nav>
+      <div class="relative z-0 inline-flex shadow-sm">
+        <inertia-link
+            class="link--pagination first:bg-red -ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
+            v-for="(item, index) in data.links" :key="index" :href="item.url" v-html="item.label">
+        </inertia-link>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import PaginationLink from "./PaginationLink";
-import PaginationPrev from "./PaginationPrev";
-import PaginationNext from "./PaginationNext";
 export default {
-name: "Pagination",
-  components: {
-    PaginationLink,
-    PaginationPrev,
-    PaginationNext
-  },
+  name: "Pagination",
+  components: {},
+  props: ['data'],
+  data() {
+    return {}
+  }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.link--pagination {
+  &:first-child {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+  }
+
+  &:last-child {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+}
 
 </style>

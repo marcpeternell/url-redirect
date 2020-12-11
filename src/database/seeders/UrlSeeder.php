@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Url;
 use Illuminate\Database\Seeder;
 
 class UrlSeeder extends Seeder
@@ -13,6 +14,8 @@ class UrlSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Url::factory()
+            ->times(50)
+            ->create();
     }
 }

@@ -7,8 +7,10 @@
       </div>
     </table-cell>
     <table-cell>
-      <div v-if="!this.showEditForm">
-        <a class="underline" :href="item.redirect_url" target="_blank">{{ item.redirect_url }} <i class="ml-1 fas fa-external-link-alt"></i></a>
+      <div v-if="!this.showEditForm" class="table--url">
+        <a class="underline" :href="item.redirect_url" target="_blank">
+          {{ limitStr(item.redirect_url, 40) }} <i class="ml-1 fas fa-external-link-alt"></i>
+        </a>
       </div>
       <div v-else class="redirect-url">
         <jet-input id="redirect_url" type="text" class="mt-1 block w-full" v-model="form.redirect_url" ref="tag"/>
@@ -25,22 +27,22 @@
       </div>
     </table-cell>
     <table-cell class="text-center">
-      <a class="bg-teal-500 hover:bg-teal-600 focus:border-teal-500 inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-teal-900 focus:shadow-outline-teal transition ease-in-out duration-150"
+      <a class="mx-1 py-4 bg-teal-500 hover:bg-teal-600 focus:border-teal-500 inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-teal-900 focus:shadow-outline-teal transition ease-in-out duration-150"
          :href="item.qr_code" download>
         <i class="fas fa-download"></i>
       </a>
       <jet-button v-if="!this.showEditForm"
-                  class="border-yellow-500 bg-yellow-500 hover:bg-yellow-600 focus:border-yellow-500"
+                  class="mx-1 py-4 border-yellow-500 bg-yellow-500 hover:bg-yellow-600 focus:border-yellow-500"
                   @click.native="editElement()"><i class="far fa-edit"></i>
       </jet-button>
-      <jet-button v-else class="border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500"
+      <jet-button v-else class="mx-1 py-4 border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500"
                   @click.native="updateElement(form)"><i class="far fa-save"></i>
       </jet-button>
       <jet-button v-if="this.showEditForm"
-                  class="border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
+                  class="mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
                   @click.native="cancelElement"><i class="fas fa-times"></i>
       </jet-button>
-      <jet-button v-else class="border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
+      <jet-button v-else class="mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
                   @click.native="deleteElement(item)"><i class="far fa-trash-alt"></i>
       </jet-button>
     </table-cell>
@@ -101,7 +103,19 @@ export default {
     setForm: function () {
       this.form.redirect_url = this.item.redirect_url;
       this.form.active = this.item.active;
+    },
+    limitStr: function (string, limit) {
+      let str = string;
+
+      if (typeof str === 'string' && str.length > limit) {
+        str = str.slice(0, limit) + '...'
+      }
+
+      return str;
     }
+  },
+  computed: {
+
   }
 }
 </script>
