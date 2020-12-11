@@ -4,7 +4,7 @@
       <div class="relative z-0 inline-flex shadow-sm">
         <inertia-link
             class="link--pagination first:bg-red -ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary"
-            v-for="(item, index) in data.links" :key="index" :href="item.url" v-html="item.label">
+            v-for="(item, index) in pagination" :key="index" :href="item.url ? item.url : '#'" v-html="item.label">
         </inertia-link>
       </div>
     </div>
@@ -15,7 +15,7 @@
 export default {
   name: "Pagination",
   components: {},
-  props: ['data'],
+  props: ['pagination'],
   data() {
     return {}
   }

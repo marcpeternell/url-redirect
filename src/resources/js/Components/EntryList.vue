@@ -1,16 +1,14 @@
 <template>
   <div>
     <div class="overflow-x-auto">
-
-      <div v-if="typeof data !== 'undefined' && data.length > 0"
+      <div v-if="typeof entries !== 'undefined' && entries.length > 0"
            class="align-middle inline-block min-w-full overflow-hidden bg-white px-8 pt-3 rounded-bl-lg rounded-br-lg">
         <table class="min-w-full">
           <thead>
           <table-head></table-head>
           </thead>
           <tbody class="bg-white">
-          <table-row v-for="item in data" :key="item.id" :item="item" :id="item.id" :tag="item.tag"
-                     :destination="item.destination" :status="item.active"></table-row>
+          <table-row v-for="entry in entries" :key="entry.id" :entry="entry"></table-row>
           </tbody>
         </table>
       </div>
@@ -32,12 +30,11 @@ export default {
     TableRow,
     TagStatus,
     TableHead,
-
     ModalDeleteEntry,
     NothingHere
   },
   props: {
-    data: Array
+    entries: Array
   },
   data() {
     return {}

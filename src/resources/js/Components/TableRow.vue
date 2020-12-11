@@ -1,15 +1,15 @@
 <template>
   <tr>
-    <table-cell>#{{ item.id }}</table-cell>
+    <table-cell>#{{ entry.id }}</table-cell>
     <table-cell>
       <div>
-        {{ item.tag }}
+        {{ entry.tag }}
       </div>
     </table-cell>
     <table-cell>
       <div v-if="!this.showEditForm" class="table--url">
-        <a class="underline" :href="item.destination" target="_blank">
-          {{ limitStr(item.destination, 40) }} <i class="ml-1 fas fa-external-link-alt"></i>
+        <a class="underline" :href="entry.destination" target="_blank">
+          {{ limitStr(entry.destination, 40) }} <i class="ml-1 fas fa-external-link-alt"></i>
         </a>
       </div>
       <div v-else class="redirect-url">
@@ -19,7 +19,7 @@
     </table-cell>
     <table-cell>
       <div v-if="!this.showEditForm">
-        <tag-status :status="item.active"></tag-status>
+        <tag-status :status="entry.active"></tag-status>
       </div>
       <div v-else class="flex justify-center align-center">
         <input-toggle v-model="form.active"></input-toggle>
@@ -28,19 +28,19 @@
     </table-cell>
     <table-cell class="text-center">
       <a class="mx-1 py-4 bg-teal-500 hover:bg-teal-600 focus:border-teal-500 inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-teal-900 focus:shadow-outline-teal transition ease-in-out duration-150"
-         :href="item.qr_code" download>
+         :href="entry.qr_code" download>
         <i class="fas fa-download"></i>
       </a>
       <jet-button v-if="!this.showEditForm"
                   class="mx-1 py-4 border-yellow-500 bg-yellow-500 hover:bg-yellow-600 focus:border-yellow-500"
                   @click.native="editElement()"><i class="far fa-edit"></i>
       </jet-button>
-      <jet-button v-else class="mx-1 py-4 border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500"
-                  @click.native="updateElement(form)"><i class="far fa-save"></i>
-      </jet-button>
-      <jet-button v-if="this.showEditForm"
+      <jet-button v-else
                   class="mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
                   @click.native="cancelElement"><i class="fas fa-times"></i>
+      </jet-button>
+      <jet-button v-if="this.showEditForm" class="mx-1 py-4 border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500"
+                  @click.native="updateElement(form)"><i class="far fa-save"></i>
       </jet-button>
       <jet-button v-else class="mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
                   @click.native="confirmEntryDeletion"><i class="far fa-trash-alt"></i>
@@ -60,7 +60,7 @@
           Nevermind
         </jet-secondary-button>
 
-        <jet-danger-button class="ml-2" @click.native="deleteElement(item)" :class="{ 'opacity-25': form.processing }"
+        <jet-danger-button class="ml-2" @click.native="deleteElement(entry)" :class="{ 'opacity-25': form.processing }"
                            :disabled="form.processing">
           Delete Entry
         </jet-danger-button>
@@ -82,7 +82,7 @@ import JetDialogModal from '@/Jetstream/DialogModal'
 
 export default {
   name: "TableRow",
-  props: ['item'],
+  props: ['entry'],
   components: {
     TableCell,
     TagStatus,
@@ -98,7 +98,7 @@ export default {
     return {
       showEditForm: false,
       form: this.$inertia.form({
-        id: this.item.id,
+        id: this.entry.id,
         destination: '',
         active: ''
       }),
@@ -127,12 +127,6 @@ export default {
         this.$refs.password.focus()
       }, 250)
     },
-
-    deleteUser() {
-      data._method = 'DELETE';
-      this.$inertia.post('/url/' + data.id, data);
-    },
-
     editElement: function () {
       this.setForm();
       this.showEditForm = true;
@@ -142,8 +136,8 @@ export default {
       this.setForm();
     },
     setForm: function () {
-      this.form.destination = this.item.destination;
-      this.form.active = this.item.active;
+      this.form.destination = this.entry.destination;
+      this.form.active = this.entry.active;
     },
     limitStr: function (string, limit) {
       let str = string;

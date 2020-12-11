@@ -2065,8 +2065,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 
@@ -2082,7 +2080,7 @@ __webpack_require__.r(__webpack_exports__);
     NothingHere: _NothingHere__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   props: {
-    data: Array
+    entries: Array
   },
   data: function data() {
     return {};
@@ -2564,7 +2562,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Pagination",
   components: {},
-  props: ['data'],
+  props: ['pagination'],
   data: function data() {
     return {};
   }
@@ -2755,7 +2753,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TableRow",
-  props: ['item'],
+  props: ['entry'],
   components: {
     TableCell: _TableCell__WEBPACK_IMPORTED_MODULE_0__["default"],
     TagStatus: _TagStatus__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -2771,7 +2769,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       showEditForm: false,
       form: this.$inertia.form({
-        id: this.item.id,
+        id: this.entry.id,
         destination: '',
         active: ''
       }),
@@ -2802,10 +2800,6 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$refs.password.focus();
       }, 250);
     },
-    deleteUser: function deleteUser() {
-      data._method = 'DELETE';
-      this.$inertia.post('/url/' + data.id, data);
-    },
     editElement: function editElement() {
       this.setForm();
       this.showEditForm = true;
@@ -2815,8 +2809,8 @@ __webpack_require__.r(__webpack_exports__);
       this.setForm();
     },
     setForm: function setForm() {
-      this.form.destination = this.item.destination;
-      this.form.active = this.item.active;
+      this.form.destination = this.entry.destination;
+      this.form.active = this.entry.active;
     },
     limitStr: function limitStr(string, limit) {
       var str = string;
@@ -2874,9 +2868,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TableSearchBar",
+  props: ['data'],
   data: function data() {
     return {
       search: ''
@@ -4339,7 +4335,7 @@ __webpack_require__.r(__webpack_exports__);
     Pagination: _Components_Pagination__WEBPACK_IMPORTED_MODULE_3__["default"],
     TableSearchBar: _Components_TableSearchBar__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
-  props: ['data', 'errors'],
+  props: ['urls', 'errors'],
   data: function data() {
     return {
       editMode: false,
@@ -46468,7 +46464,7 @@ var render = function() {
       "div",
       { staticClass: "overflow-x-auto" },
       [
-        typeof _vm.data !== "undefined" && _vm.data.length > 0
+        typeof _vm.entries !== "undefined" && _vm.entries.length > 0
           ? _c(
               "div",
               {
@@ -46482,16 +46478,10 @@ var render = function() {
                   _c(
                     "tbody",
                     { staticClass: "bg-white" },
-                    _vm._l(_vm.data, function(item) {
+                    _vm._l(_vm.entries, function(entry) {
                       return _c("table-row", {
-                        key: item.id,
-                        attrs: {
-                          item: item,
-                          id: item.id,
-                          tag: item.tag,
-                          destination: item.destination,
-                          status: item.active
-                        }
+                        key: entry.id,
+                        attrs: { entry: entry }
                       })
                     }),
                     1
@@ -47810,12 +47800,12 @@ var render = function() {
         _c(
           "div",
           { staticClass: "relative z-0 inline-flex shadow-sm" },
-          _vm._l(_vm.data.links, function(item, index) {
+          _vm._l(_vm.pagination, function(item, index) {
             return _c("inertia-link", {
               key: index,
               staticClass:
                 "link--pagination first:bg-red -ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary",
-              attrs: { href: item.url },
+              attrs: { href: item.url ? item.url : "#" },
               domProps: { innerHTML: _vm._s(item.label) }
             })
           }),
@@ -47960,10 +47950,10 @@ var render = function() {
   return _c(
     "tr",
     [
-      _c("table-cell", [_vm._v("#" + _vm._s(_vm.item.id))]),
+      _c("table-cell", [_vm._v("#" + _vm._s(_vm.entry.id))]),
       _vm._v(" "),
       _c("table-cell", [
-        _c("div", [_vm._v("\n      " + _vm._s(_vm.item.tag) + "\n    ")])
+        _c("div", [_vm._v("\n      " + _vm._s(_vm.entry.tag) + "\n    ")])
       ]),
       _vm._v(" "),
       _c("table-cell", [
@@ -47973,12 +47963,12 @@ var render = function() {
                 "a",
                 {
                   staticClass: "underline",
-                  attrs: { href: _vm.item.destination, target: "_blank" }
+                  attrs: { href: _vm.entry.destination, target: "_blank" }
                 },
                 [
                   _vm._v(
                     "\n        " +
-                      _vm._s(_vm.limitStr(_vm.item.destination, 40)) +
+                      _vm._s(_vm.limitStr(_vm.entry.destination, 40)) +
                       " "
                   ),
                   _c("i", { staticClass: "ml-1 fas fa-external-link-alt" })
@@ -48015,7 +48005,7 @@ var render = function() {
         !this.showEditForm
           ? _c(
               "div",
-              [_c("tag-status", { attrs: { status: _vm.item.active } })],
+              [_c("tag-status", { attrs: { status: _vm.entry.active } })],
               1
             )
           : _c(
@@ -48050,7 +48040,7 @@ var render = function() {
             {
               staticClass:
                 "mx-1 py-4 bg-teal-500 hover:bg-teal-600 focus:border-teal-500 inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-teal-900 focus:shadow-outline-teal transition ease-in-out duration-150",
-              attrs: { href: _vm.item.qr_code, download: "" }
+              attrs: { href: _vm.entry.qr_code, download: "" }
             },
             [_c("i", { staticClass: "fas fa-download" })]
           ),
@@ -48073,21 +48063,6 @@ var render = function() {
                 "jet-button",
                 {
                   staticClass:
-                    "mx-1 py-4 border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500",
-                  nativeOn: {
-                    click: function($event) {
-                      return _vm.updateElement(_vm.form)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "far fa-save" })]
-              ),
-          _vm._v(" "),
-          this.showEditForm
-            ? _c(
-                "jet-button",
-                {
-                  staticClass:
                     "mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500",
                   nativeOn: {
                     click: function($event) {
@@ -48096,6 +48071,21 @@ var render = function() {
                   }
                 },
                 [_c("i", { staticClass: "fas fa-times" })]
+              ),
+          _vm._v(" "),
+          this.showEditForm
+            ? _c(
+                "jet-button",
+                {
+                  staticClass:
+                    "mx-1 py-4 border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500",
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.updateElement(_vm.form)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "far fa-save" })]
               )
             : _c(
                 "jet-button",
@@ -48164,7 +48154,7 @@ var render = function() {
                     attrs: { disabled: _vm.form.processing },
                     nativeOn: {
                       click: function($event) {
-                        return _vm.deleteElement(_vm.item)
+                        return _vm.deleteElement(_vm.entry)
                       }
                     }
                   },
@@ -48280,7 +48270,11 @@ var render = function() {
                   ],
                   staticClass:
                     "flex-shrink flex-grow flex-auto leading-normal tracking-wide w-px flex-1 border border-none border-l-0 rounded rounded-l-none px-3 relative focus:outline-none text-xxs lg:text-xs lg:text-base text-gray-500 font-thin",
-                  attrs: { type: "text", placeholder: "Search by Tags" },
+                  attrs: {
+                    type: "text",
+                    placeholder: "Search by Tags",
+                    disabled: !_vm.data.length > 0
+                  },
                   domProps: { value: _vm.search },
                   on: {
                     keyup: _vm.searchInput,
@@ -50979,14 +50973,14 @@ var render = function() {
               "bg-white overflow-hidden shadow-xl sm:rounded-lg bg-white overflow-hidden shadow-xl sm:rounded-lg sm:px-20 sm:py-10 bg-white border-b border-gray-200"
           },
           [
-            _c("table-search-bar"),
+            _c("table-search-bar", { attrs: { data: _vm.urls.data } }),
             _vm._v(" "),
-            _c("entry-list", { attrs: { data: _vm.data.data } }),
+            _c("entry-list", { attrs: { entries: _vm.urls.data } }),
             _vm._v(" "),
-            _vm.data.data.length > 0
+            _vm.urls.data.length > 0
               ? _c("pagination", {
                   staticClass: "px-8 py-4 justify-center",
-                  attrs: { data: _vm.data }
+                  attrs: { pagination: _vm.urls.links }
                 })
               : _vm._e()
           ],

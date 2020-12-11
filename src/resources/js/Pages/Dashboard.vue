@@ -13,9 +13,9 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-12">
       <div
           class="bg-white overflow-hidden shadow-xl sm:rounded-lg bg-white overflow-hidden shadow-xl sm:rounded-lg sm:px-20 sm:py-10 bg-white border-b border-gray-200">
-        <table-search-bar></table-search-bar>
-        <entry-list :data="data.data"></entry-list>
-        <pagination v-if="data.data.length > 0" class="px-8 py-4 justify-center" :data="data"></pagination>
+        <table-search-bar :data="urls.data"></table-search-bar>
+        <entry-list :entries="urls.data"></entry-list>
+        <pagination v-if="urls.data.length > 0" class="px-8 py-4 justify-center" :pagination="urls.links"></pagination>
       </div>
     </div>
   </app-layout>
@@ -37,7 +37,7 @@ export default {
     Pagination,
     TableSearchBar
   },
-  props: ['data', 'errors'],
+  props: ['urls', 'errors'],
   data() {
     return {
       editMode: false,

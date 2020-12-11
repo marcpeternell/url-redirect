@@ -17,7 +17,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Dashboard',[
-            'data' => Url::when($request->search, function ($query, $term) {
+            'urls' => Url::when($request->search, function ($query, $term) {
                 $query->where('tag', 'LIKE', '%' . $term .'%');
             })->orderBy('id', 'DESC')->paginate(25)
         ]);
