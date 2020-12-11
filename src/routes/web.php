@@ -20,4 +20,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         'index'
     ]);
     Route::resource('url', UrlController::class);
+    Route::get('tag/{tag}', [UrlController::class, 'tag']);
 });

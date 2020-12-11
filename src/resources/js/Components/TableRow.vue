@@ -8,7 +8,7 @@
     </table-cell>
     <table-cell>
       <div v-if="!this.showEditForm">
-        {{ item.redirect_url }}
+        <a class="underline" :href="item.redirect_url" target="_blank">{{ item.redirect_url }} <i class="ml-1 fas fa-external-link-alt"></i></a>
       </div>
       <div v-else class="redirect-url">
         <jet-input id="redirect_url" type="text" class="mt-1 block w-full" v-model="form.redirect_url" ref="tag"/>

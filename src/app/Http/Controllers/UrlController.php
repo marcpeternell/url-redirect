@@ -8,6 +8,7 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Response\QrCodeResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -16,12 +17,12 @@ class UrlController extends Controller
 
     private $rules = [
         'tag' => 'required|max:255|unique:urls|min:3',
-        'redirect_url' => 'required|min:3',
+        'redirect_url' => 'required|min:3|url',
     ];
 
     private $updateRules = [
-        'redirect_url' => 'required|min:3',
-        'active'=>'required|boolean'
+        'redirect_url' => 'required|min:3|url',
+        'active' => 'required|boolean'
     ];
 
     /**
@@ -82,7 +83,31 @@ class UrlController extends Controller
         }
     }
 
-    private function generateQR($url, $tag)
+    /**
+     * @param $tag
+     * @return RedirectResponse
+     */
+    public function tag($tag)
+    {
+        $urlQuery = Url::where('tag', $tag);
+
+        if (empty($urlQuery->first())) {
+            abort(404);
+        }
+
+        $urlQuery->update([
+            'visits' => DB::raw('visits+1'),
+        ]);
+
+        return redirect()->away($urlQuery->first()->redirect_url);
+    }
+
+    /**
+     * @param $url
+     * @param $tag
+     * @return string
+     */
+    private function generateQR($url, $tag): string
     {
         // Create a basic QR code
         $qrCode = new QrCode($url);
@@ -106,7 +131,7 @@ class UrlController extends Controller
         $qrCode->setWriterOptions(['exclude_xml_declaration' => true]);
 
         // Save it to a file
-        $path = 'images/qr_code/'. now()->timestamp . '_' . $tag .'.png';
+        $path = 'images/qr_code/' . now()->timestamp . '_' . $tag . '.png';
         $qrCode->writeFile(public_path($path));
 
         return $path;

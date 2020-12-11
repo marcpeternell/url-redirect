@@ -2022,7 +2022,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.form.post('/url', data).then(function () {
-        _this.reset();
+        if (!$page.errors.tag && !$page.errors.redirect_url) {
+          _this.reset();
+        }
       });
     }
   }
@@ -47636,7 +47638,17 @@ var render = function() {
       _c("table-cell", [
         !this.showEditForm
           ? _c("div", [
-              _vm._v("\n      " + _vm._s(_vm.item.redirect_url) + "\n    ")
+              _c(
+                "a",
+                {
+                  staticClass: "underline",
+                  attrs: { href: _vm.item.redirect_url, target: "_blank" }
+                },
+                [
+                  _vm._v(_vm._s(_vm.item.redirect_url) + " "),
+                  _c("i", { staticClass: "ml-1 fas fa-external-link-alt" })
+                ]
+              )
             ])
           : _c(
               "div",

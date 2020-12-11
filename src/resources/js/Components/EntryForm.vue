@@ -80,7 +80,9 @@ export default {
     },
     save: function (data) {
       this.form.post('/url', data).then(()=>{
-        this.reset();
+        if (!$page.errors.tag && !$page.errors.redirect_url) {
+          this.reset();
+        }
       })
     },
   },
