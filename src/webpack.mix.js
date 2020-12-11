@@ -17,5 +17,6 @@ mix.js('resources/js/app.js', 'public/js')
     .tailwind('./tailwind.config.js')
     .sass('resources/sass/app.scss', 'public/css')
     .copyDirectory('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts')
+    .copy('resources/assets/images/', 'public/images/')
     .webpackConfig(require('./webpack.config'))
     .sourceMaps(productionSourceMaps, 'source-map');
