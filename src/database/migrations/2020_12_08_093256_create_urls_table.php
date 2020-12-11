@@ -19,7 +19,7 @@ class CreateUrlsTable extends Migration
             $table->text('redirect_url');
             $table->string('qr_code')->unique();
             $table->integer('visits')->nullable();
-            $table->boolean('active')->default(false);
+            $table->boolean('active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

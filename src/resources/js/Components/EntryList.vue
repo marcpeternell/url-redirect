@@ -8,7 +8,7 @@
           <table-head></table-head>
           </thead>
           <tbody class="bg-white">
-          <table-row v-for="item in data" :key="item.id" :id="item.id" :tag="item.tag"
+          <table-row v-for="item in data" :key="item.id" :item="item" :id="item.id" :tag="item.tag"
                      :redirect_url="item.redirect_url" :status="item.active"></table-row>
           </tbody>
         </table>
@@ -24,6 +24,9 @@ import TableHead from "./TableHead";
 import TagStatus from "./TagStatus";
 import TableSearchBar from "./TableSearchBar";
 import ModalDeleteEntry from "./ModalDeleteEntry";
+import JetDialogModal from '@/Jetstream/DialogModal';
+import JetSecondaryButton from '@/Jetstream/SecondaryButton';
+import JetButton from '@/Jetstream/Button';
 
 export default {
   name: "EntryList",
@@ -37,5 +40,10 @@ export default {
   props: {
     data: Array
   },
+  data() {
+    return {}
+  },
+  methods: {
+  }
 }
 </script>

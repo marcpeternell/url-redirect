@@ -12,14 +12,14 @@
             <div class="col-span-1 mb-4 md:mb-0">
               <jet-label for="tag" value="Tag:"/>
               <jet-input id="tag" type="text" class="mt-1 block w-full" v-model="form.tag" ref="tag"/>
-              <jet-input-error :message="$page.errors.tag ? $page.errors.tag[0]: null"></jet-input-error>
+              <jet-input-error :message="form.error('tag')" class="mt-2" />
             </div>
 
             <div class="col-span-1">
               <jet-label for="redirect_url" value="Redirect To:"/>
               <jet-input id="redirect_url" type="text" class="mt-1 block w-full" v-model="form.redirect_url"
                          ref="redirect_url"/>
-              <jet-input-error :message="$page.errors.redirect_url ? $page.errors.redirect_url[0]: null"></jet-input-error>
+              <jet-input-error :message="form.error('redirect_url')" class="mt-2" />
             </div>
           </template>
 

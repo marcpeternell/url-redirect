@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Url;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\LabelAlignment;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Response\QrCodeResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UrlController extends Controller
 {
@@ -22,8 +20,8 @@ class UrlController extends Controller
     ];
 
     private $updateRules = [
-        'tag' => 'required|max:255|min:3',
         'redirect_url' => 'required|min:3',
+        'active'=>'required|boolean'
     ];
 
     /**
@@ -61,7 +59,10 @@ class UrlController extends Controller
         Validator::make($request->all(), $this->updateRules)->validate();
 
         if ($request->has('id')) {
-            Url::find($request->input('id'))->update($request->all());
+            Url::find($request->input('id'))->update([
+                'active' => $request->active,
+                'redirect_url' => $request->redirect_url
+            ]);
             return redirect()->back()
                 ->with('message', 'Url Updated Successfully.');
         }
@@ -105,7 +106,7 @@ class UrlController extends Controller
         $qrCode->setWriterOptions(['exclude_xml_declaration' => true]);
 
         // Save it to a file
-        $path = '/images/qr_code/'. now()->timestamp . '_' . $tag .'.png';
+        $path = 'images/qr_code/'. now()->timestamp . '_' . $tag .'.png';
         $qrCode->writeFile(public_path($path));
 
         return $path;
