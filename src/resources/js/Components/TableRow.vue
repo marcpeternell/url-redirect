@@ -8,13 +8,13 @@
     </table-cell>
     <table-cell>
       <div v-if="!this.showEditForm" class="table--url">
-        <a class="underline" :href="item.redirect_url" target="_blank">
-          {{ limitStr(item.redirect_url, 40) }} <i class="ml-1 fas fa-external-link-alt"></i>
+        <a class="underline" :href="item.destination" target="_blank">
+          {{ limitStr(item.destination, 40) }} <i class="ml-1 fas fa-external-link-alt"></i>
         </a>
       </div>
       <div v-else class="redirect-url">
-        <jet-input id="redirect_url" type="text" class="mt-1 block w-full" v-model="form.redirect_url" ref="tag"/>
-        <jet-input-error :message="form.error('redirect_url')" class="mt-2"/>
+        <jet-input id="destination" type="text" class="mt-1 block w-full" v-model="form.destination" ref="tag"/>
+        <jet-input-error :message="form.error('destination')" class="mt-2"/>
       </div>
     </table-cell>
     <table-cell>
@@ -43,9 +43,29 @@
                   @click.native="cancelElement"><i class="fas fa-times"></i>
       </jet-button>
       <jet-button v-else class="mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
-                  @click.native="deleteElement(item)"><i class="far fa-trash-alt"></i>
+                  @click.native="confirmEntryDeletion"><i class="far fa-trash-alt"></i>
       </jet-button>
     </table-cell>
+    <jet-dialog-modal :show="confirmingEntryDeletion" @close="confirmingEntryDeletion = false">
+      <template #title>
+        Delete Entry
+      </template>
+
+      <template #content>
+        Are you sure you want to delete this entry? Once it is deleted, all of its resources and data will be deleted.
+      </template>
+
+      <template #footer>
+        <jet-secondary-button @click.native="confirmingEntryDeletion = false">
+          Nevermind
+        </jet-secondary-button>
+
+        <jet-danger-button class="ml-2" @click.native="deleteElement(item)" :class="{ 'opacity-25': form.processing }"
+                           :disabled="form.processing">
+          Delete Entry
+        </jet-danger-button>
+      </template>
+    </jet-dialog-modal>
   </tr>
 </template>
 <script>
@@ -56,6 +76,9 @@ import JetButton from "@/Jetstream/Button";
 import JetInput from "@/Jetstream/Input";
 import JetInputError from "@/Jetstream/InputError";
 import InputToggle from "@/Components/InputToggle"
+import JetSecondaryButton from '@/Jetstream/SecondaryButton'
+import JetDangerButton from '@/Jetstream/DangerButton'
+import JetDialogModal from '@/Jetstream/DialogModal'
 
 export default {
   name: "TableRow",
@@ -66,16 +89,20 @@ export default {
     JetButton,
     JetInput,
     JetInputError,
-    InputToggle
+    InputToggle,
+    JetSecondaryButton,
+    JetDangerButton,
+    JetDialogModal
   },
   data() {
     return {
       showEditForm: false,
       form: this.$inertia.form({
         id: this.item.id,
-        redirect_url: '',
+        destination: '',
         active: ''
-      })
+      }),
+      confirmingEntryDeletion: false,
     }
   },
   methods: {
@@ -83,7 +110,7 @@ export default {
       this.form.put('/url/' + data.id, data, {
         preserveScroll: true,
       }).then(() => {
-        if (!this.form.error('active') && !this.form.error('redirect_url')) {
+        if (!this.form.error('active') && !this.form.error('destination')) {
           this.showEditForm = false;
         }
       })
@@ -92,6 +119,20 @@ export default {
       data._method = 'DELETE';
       this.$inertia.post('/url/' + data.id, data)
     },
+
+    confirmEntryDeletion() {
+      this.confirmingEntryDeletion = true;
+
+      setTimeout(() => {
+        this.$refs.password.focus()
+      }, 250)
+    },
+
+    deleteUser() {
+      data._method = 'DELETE';
+      this.$inertia.post('/url/' + data.id, data);
+    },
+
     editElement: function () {
       this.setForm();
       this.showEditForm = true;
@@ -101,7 +142,7 @@ export default {
       this.setForm();
     },
     setForm: function () {
-      this.form.redirect_url = this.item.redirect_url;
+      this.form.destination = this.item.destination;
       this.form.active = this.item.active;
     },
     limitStr: function (string, limit) {
@@ -114,9 +155,7 @@ export default {
       return str;
     }
   },
-  computed: {
-
-  }
+  computed: {}
 }
 </script>
 

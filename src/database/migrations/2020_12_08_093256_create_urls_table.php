@@ -16,7 +16,7 @@ class CreateUrlsTable extends Migration
         Schema::create('urls', function (Blueprint $table) {
             $table->id();
             $table->string('tag')->unique();
-            $table->text('redirect_url');
+            $table->text('destination');
             $table->string('qr_code')->unique();
             $table->integer('visits')->default(0);
             $table->boolean('active')->default(true);

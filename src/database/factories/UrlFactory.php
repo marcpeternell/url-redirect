@@ -24,7 +24,7 @@ class UrlFactory extends Factory
     {
         return [
             'tag' => $this->faker->firstName,
-            'redirect_url' => $this->faker->unique()->url,
+            'destination' => $this->faker->unique()->url,
             'qr_code' => $this->faker->unique()->imageUrl(),
             'visits' => $this->faker->numberBetween(1, 100),
             'active' => $this->faker->numberBetween(0,1),

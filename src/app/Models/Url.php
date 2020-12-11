@@ -12,6 +12,6 @@ class Url extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['tag', 'redirect_url', 'qr_code', 'visits', 'active'];
+    protected $fillable = ['tag', 'destination', 'qr_code', 'visits', 'active'];
 
 }

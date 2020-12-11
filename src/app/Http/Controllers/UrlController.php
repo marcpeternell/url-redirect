@@ -17,11 +17,11 @@ class UrlController extends Controller
 
     private $rules = [
         'tag' => 'required|max:255|unique:urls|min:3',
-        'redirect_url' => 'required|min:3|url',
+        'destination' => 'required|min:3|url',
     ];
 
     private $updateRules = [
-        'redirect_url' => 'required|min:3|url',
+        'destination' => 'required|min:3|url',
         'active' => 'required|boolean'
     ];
 
@@ -42,7 +42,7 @@ class UrlController extends Controller
 
         Url::create([
             'tag' => $request->tag,
-            'redirect_url' => $request->redirect_url,
+            'destination' => $request->destination,
             'qr_code' => $path
         ]);
 
@@ -64,7 +64,7 @@ class UrlController extends Controller
         if ($request->has('id')) {
             Url::find($request->input('id'))->update([
                 'active' => $request->active,
-                'redirect_url' => $request->redirect_url
+                'destination' => $request->destination
             ]);
             return redirect()->back()
                 ->with('message', 'Url Updated Successfully.');
@@ -86,6 +86,8 @@ class UrlController extends Controller
     }
 
     /**
+     * Redirect incoming urls do destination url
+     *
      * @param $tag
      * @return RedirectResponse
      */
@@ -101,7 +103,7 @@ class UrlController extends Controller
             'visits' => DB::raw('visits+1'),
         ]);
 
-        return redirect()->away($urlQuery->first()->redirect_url);
+        return redirect()->away($urlQuery->first()->destination);
     }
 
     /**

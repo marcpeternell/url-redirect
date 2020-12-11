@@ -7,7 +7,7 @@
       <slot>Tag</slot>
     </table-head-item>
     <table-head-item>
-      <slot>Redirect URL</slot>
+      <slot>Destination</slot>
     </table-head-item>
     <table-head-item>
       <slot>Status</slot>

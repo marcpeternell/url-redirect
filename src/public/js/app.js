@@ -2007,7 +2007,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       form: this.$inertia.form({
         tag: '',
-        redirect_url: ''
+        destination: ''
       })
     };
   },
@@ -2015,14 +2015,14 @@ __webpack_require__.r(__webpack_exports__);
     reset: function reset() {
       this.form = {
         tag: null,
-        redirect_url: null
+        destination: null
       };
     },
     save: function save(data) {
       var _this = this;
 
       this.form.post('/url', data).then(function () {
-        if (!$page.errors.tag && !$page.errors.redirect_url) {
+        if (!$page.errors.tag && !$page.errors.destination) {
           _this.reset();
         }
       });
@@ -2046,7 +2046,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TagStatus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./TagStatus */ "./resources/js/Components/TagStatus.vue");
 /* harmony import */ var _ModalDeleteEntry__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ModalDeleteEntry */ "./resources/js/Components/ModalDeleteEntry.vue");
 /* harmony import */ var _NothingHere__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./NothingHere */ "./resources/js/Components/NothingHere.vue");
-//
 //
 //
 //
@@ -2672,6 +2671,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Jetstream_Input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Jetstream/Input */ "./resources/js/Jetstream/Input.vue");
 /* harmony import */ var _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Jetstream/InputError */ "./resources/js/Jetstream/InputError.vue");
 /* harmony import */ var _Components_InputToggle__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Components/InputToggle */ "./resources/js/Components/InputToggle.vue");
+/* harmony import */ var _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/Jetstream/SecondaryButton */ "./resources/js/Jetstream/SecondaryButton.vue");
+/* harmony import */ var _Jetstream_DangerButton__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @/Jetstream/DangerButton */ "./resources/js/Jetstream/DangerButton.vue");
+/* harmony import */ var _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @/Jetstream/DialogModal */ "./resources/js/Jetstream/DialogModal.vue");
 //
 //
 //
@@ -2722,6 +2724,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 
@@ -2737,16 +2762,20 @@ __webpack_require__.r(__webpack_exports__);
     JetButton: _Jetstream_Button__WEBPACK_IMPORTED_MODULE_2__["default"],
     JetInput: _Jetstream_Input__WEBPACK_IMPORTED_MODULE_3__["default"],
     JetInputError: _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_4__["default"],
-    InputToggle: _Components_InputToggle__WEBPACK_IMPORTED_MODULE_5__["default"]
+    InputToggle: _Components_InputToggle__WEBPACK_IMPORTED_MODULE_5__["default"],
+    JetSecondaryButton: _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_6__["default"],
+    JetDangerButton: _Jetstream_DangerButton__WEBPACK_IMPORTED_MODULE_7__["default"],
+    JetDialogModal: _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   data: function data() {
     return {
       showEditForm: false,
       form: this.$inertia.form({
         id: this.item.id,
-        redirect_url: '',
+        destination: '',
         active: ''
-      })
+      }),
+      confirmingEntryDeletion: false
     };
   },
   methods: {
@@ -2756,12 +2785,24 @@ __webpack_require__.r(__webpack_exports__);
       this.form.put('/url/' + data.id, data, {
         preserveScroll: true
       }).then(function () {
-        if (!_this.form.error('active') && !_this.form.error('redirect_url')) {
+        if (!_this.form.error('active') && !_this.form.error('destination')) {
           _this.showEditForm = false;
         }
       });
     },
     deleteElement: function deleteElement(data) {
+      data._method = 'DELETE';
+      this.$inertia.post('/url/' + data.id, data);
+    },
+    confirmEntryDeletion: function confirmEntryDeletion() {
+      var _this2 = this;
+
+      this.confirmingEntryDeletion = true;
+      setTimeout(function () {
+        _this2.$refs.password.focus();
+      }, 250);
+    },
+    deleteUser: function deleteUser() {
       data._method = 'DELETE';
       this.$inertia.post('/url/' + data.id, data);
     },
@@ -2774,7 +2815,7 @@ __webpack_require__.r(__webpack_exports__);
       this.setForm();
     },
     setForm: function setForm() {
-      this.form.redirect_url = this.item.redirect_url;
+      this.form.destination = this.item.destination;
       this.form.active = this.item.active;
     },
     limitStr: function limitStr(string, limit) {
@@ -46340,29 +46381,26 @@ var render = function() {
                         { staticClass: "col-span-1" },
                         [
                           _c("jet-label", {
-                            attrs: {
-                              for: "redirect_url",
-                              value: "Redirect To:"
-                            }
+                            attrs: { for: "destination", value: "Redirect To:" }
                           }),
                           _vm._v(" "),
                           _c("jet-input", {
-                            ref: "redirect_url",
+                            ref: "destination",
                             staticClass: "mt-1 block w-full",
-                            attrs: { id: "redirect_url", type: "text" },
+                            attrs: { id: "destination", type: "text" },
                             model: {
-                              value: _vm.form.redirect_url,
+                              value: _vm.form.destination,
                               callback: function($$v) {
-                                _vm.$set(_vm.form, "redirect_url", $$v)
+                                _vm.$set(_vm.form, "destination", $$v)
                               },
-                              expression: "form.redirect_url"
+                              expression: "form.destination"
                             }
                           }),
                           _vm._v(" "),
                           _c("jet-input-error", {
                             attrs: {
-                              message: _vm.$page.errors.redirect_url
-                                ? _vm.$page.errors.redirect_url[0]
+                              message: _vm.$page.errors.destination
+                                ? _vm.$page.errors.destination[0]
                                 : null
                             }
                           })
@@ -46451,7 +46489,7 @@ var render = function() {
                           item: item,
                           id: item.id,
                           tag: item.tag,
-                          redirect_url: item.redirect_url,
+                          destination: item.destination,
                           status: item.active
                         }
                       })
@@ -47935,12 +47973,12 @@ var render = function() {
                 "a",
                 {
                   staticClass: "underline",
-                  attrs: { href: _vm.item.redirect_url, target: "_blank" }
+                  attrs: { href: _vm.item.destination, target: "_blank" }
                 },
                 [
                   _vm._v(
                     "\n        " +
-                      _vm._s(_vm.limitStr(_vm.item.redirect_url, 40)) +
+                      _vm._s(_vm.limitStr(_vm.item.destination, 40)) +
                       " "
                   ),
                   _c("i", { staticClass: "ml-1 fas fa-external-link-alt" })
@@ -47954,19 +47992,19 @@ var render = function() {
                 _c("jet-input", {
                   ref: "tag",
                   staticClass: "mt-1 block w-full",
-                  attrs: { id: "redirect_url", type: "text" },
+                  attrs: { id: "destination", type: "text" },
                   model: {
-                    value: _vm.form.redirect_url,
+                    value: _vm.form.destination,
                     callback: function($$v) {
-                      _vm.$set(_vm.form, "redirect_url", $$v)
+                      _vm.$set(_vm.form, "destination", $$v)
                     },
-                    expression: "form.redirect_url"
+                    expression: "form.destination"
                   }
                 }),
                 _vm._v(" "),
                 _c("jet-input-error", {
                   staticClass: "mt-2",
-                  attrs: { message: _vm.form.error("redirect_url") }
+                  attrs: { message: _vm.form.error("destination") }
                 })
               ],
               1
@@ -48066,7 +48104,7 @@ var render = function() {
                     "mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500",
                   nativeOn: {
                     click: function($event) {
-                      return _vm.deleteElement(_vm.item)
+                      return _vm.confirmEntryDeletion($event)
                     }
                   }
                 },
@@ -48074,7 +48112,70 @@ var render = function() {
               )
         ],
         1
-      )
+      ),
+      _vm._v(" "),
+      _c("jet-dialog-modal", {
+        attrs: { show: _vm.confirmingEntryDeletion },
+        on: {
+          close: function($event) {
+            _vm.confirmingEntryDeletion = false
+          }
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "title",
+            fn: function() {
+              return [_vm._v("\n      Delete Entry\n    ")]
+            },
+            proxy: true
+          },
+          {
+            key: "content",
+            fn: function() {
+              return [
+                _vm._v(
+                  "\n      Are you sure you want to delete this entry? Once it is deleted, all of its resources and data will be deleted.\n    "
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "jet-secondary-button",
+                  {
+                    nativeOn: {
+                      click: function($event) {
+                        _vm.confirmingEntryDeletion = false
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Nevermind\n      ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "jet-danger-button",
+                  {
+                    staticClass: "ml-2",
+                    class: { "opacity-25": _vm.form.processing },
+                    attrs: { disabled: _vm.form.processing },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.deleteElement(_vm.item)
+                      }
+                    }
+                  },
+                  [_vm._v("\n        Delete Entry\n      ")]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
     ],
     1
   )

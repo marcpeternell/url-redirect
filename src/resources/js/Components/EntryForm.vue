@@ -23,10 +23,10 @@
             </div>
 
             <div class="col-span-1">
-              <jet-label for="redirect_url" value="Redirect To:"/>
-              <jet-input id="redirect_url" type="text" class="mt-1 block w-full" v-model="form.redirect_url"
-                         ref="redirect_url"/>
-              <jet-input-error :message="$page.errors.redirect_url ? $page.errors.redirect_url[0]: null"></jet-input-error>
+              <jet-label for="destination" value="Redirect To:"/>
+              <jet-input id="destination" type="text" class="mt-1 block w-full" v-model="form.destination"
+                         ref="destination"/>
+              <jet-input-error :message="$page.errors.destination ? $page.errors.destination[0]: null"></jet-input-error>
             </div>
           </template>
 
@@ -67,7 +67,7 @@ export default {
     return {
       form: this.$inertia.form({
         tag: '',
-        redirect_url: '',
+        destination: '',
       })
     }
   },
@@ -75,12 +75,12 @@ export default {
     reset: function () {
       this.form = {
         tag: null,
-        redirect_url: null,
+        destination: null,
       }
     },
     save: function (data) {
       this.form.post('/url', data).then(()=>{
-        if (!$page.errors.tag && !$page.errors.redirect_url) {
+        if (!$page.errors.tag && !$page.errors.destination) {
           this.reset();
         }
       })
