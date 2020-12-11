@@ -47889,7 +47889,7 @@ var render = function() {
       _vm._v(" "),
       _c("table-head-item", [_vm._t("default", [_vm._v("Tag")])], 2),
       _vm._v(" "),
-      _c("table-head-item", [_vm._t("default", [_vm._v("Redirect URL")])], 2),
+      _c("table-head-item", [_vm._t("default", [_vm._v("Destination")])], 2),
       _vm._v(" "),
       _c("table-head-item", [_vm._t("default", [_vm._v("Status")])], 2),
       _vm._v(" "),
@@ -50971,7 +50971,7 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
+      _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8 pb-12" }, [
         _c(
           "div",
           {
@@ -50983,10 +50983,12 @@ var render = function() {
             _vm._v(" "),
             _c("entry-list", { attrs: { data: _vm.data.data } }),
             _vm._v(" "),
-            _c("pagination", {
-              staticClass: "px-8 py-4 justify-center",
-              attrs: { data: _vm.data }
-            })
+            _vm.data.data.length > 0
+              ? _c("pagination", {
+                  staticClass: "px-8 py-4 justify-center",
+                  attrs: { data: _vm.data }
+                })
+              : _vm._e()
           ],
           1
         )
