@@ -10,7 +10,7 @@
           </div>
         </div>
 
-        <jet-form-section @submitted="save(form)">
+        <form-section @submitted="save(form)">
           <template #title>
             Add new Entry
           </template>
@@ -36,7 +36,7 @@
               <i v-else class="fas fa-plus mr-1"></i> Add
             </jet-button>
           </template>
-        </jet-form-section>
+        </form-section>
       </div>
     </div>
   </div>
@@ -47,7 +47,7 @@ import JetLabel from "../Jetstream/Label";
 import JetInput from "../Jetstream/Input";
 import JetButton from "../Jetstream/Button";
 import JetInputError from "../Jetstream/InputError";
-import JetFormSection from "../Jetstream/FormSection";
+import FormSection from "./FormSection";
 import JetActionMessage from "../Jetstream/ActionMessage"
 
 export default {
@@ -57,7 +57,7 @@ export default {
     JetInput,
     JetLabel,
     JetInputError,
-    JetFormSection,
+    FormSection,
     JetActionMessage
   },
   props: {
