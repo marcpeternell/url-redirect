@@ -1980,6 +1980,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2015,8 +2019,11 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     save: function save(data) {
-      this.$inertia.post('/url', data);
-      this.reset();
+      var _this = this;
+
+      this.form.post('/url', data).then(function () {
+        _this.reset();
+      });
     }
   }
 });
@@ -2661,14 +2668,15 @@ __webpack_require__.r(__webpack_exports__);
       this.form.put('/url/' + data.id, data, {
         preserveScroll: true
       }).then(function () {
-        console.log(_this.form);
-
         if (!_this.form.error('active') && !_this.form.error('redirect_url')) {
           _this.showEditForm = false;
         }
       });
     },
-    deleteElement: function deleteElement(data) {},
+    deleteElement: function deleteElement(data) {
+      data._method = 'DELETE';
+      this.$inertia.post('/url/' + data.id, data);
+    },
     editElement: function editElement() {
       this.setForm();
       this.showEditForm = true;
@@ -46097,6 +46105,26 @@ var render = function() {
           "div",
           { staticClass: "mt-4" },
           [
+            _vm.$page.flash.message
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md my-3",
+                    attrs: { role: "alert" }
+                  },
+                  [
+                    _c("div", { staticClass: "flex" }, [
+                      _c("div", [
+                        _c("p", { staticClass: "text-sm" }, [
+                          _vm._v(_vm._s(_vm.$page.flash.message))
+                        ])
+                      ])
+                    ])
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
             _c("jet-form-section", {
               on: {
                 submitted: function($event) {
@@ -46137,8 +46165,11 @@ var render = function() {
                           }),
                           _vm._v(" "),
                           _c("jet-input-error", {
-                            staticClass: "mt-2",
-                            attrs: { message: _vm.form.error("tag") }
+                            attrs: {
+                              message: _vm.$page.errors.tag
+                                ? _vm.$page.errors.tag[0]
+                                : null
+                            }
                           })
                         ],
                         1
@@ -46169,8 +46200,11 @@ var render = function() {
                           }),
                           _vm._v(" "),
                           _c("jet-input-error", {
-                            staticClass: "mt-2",
-                            attrs: { message: _vm.form.error("redirect_url") }
+                            attrs: {
+                              message: _vm.$page.errors.redirect_url
+                                ? _vm.$page.errors.redirect_url[0]
+                                : null
+                            }
                           })
                         ],
                         1
@@ -46184,28 +46218,15 @@ var render = function() {
                   fn: function() {
                     return [
                       _c(
-                        "jet-action-message",
-                        {
-                          staticClass: "mr-3",
-                          attrs: { on: _vm.form.recentlySuccessful }
-                        },
-                        [
-                          _vm._v(
-                            "\n            " +
-                              _vm._s(_vm.$page.flash.message) +
-                              "\n          "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
                         "jet-button",
                         {
                           class: { "opacity-25": _vm.form.processing },
                           attrs: { disabled: _vm.form.processing }
                         },
                         [
-                          _c("i", { staticClass: "fas fa-plus mr-1" }),
+                          _vm.form.processing
+                            ? _c("i", { staticClass: "fas fa-spinner fa-spin" })
+                            : _c("i", { staticClass: "fas fa-plus mr-1" }),
                           _vm._v(" Add\n          ")
                         ]
                       )
@@ -47695,7 +47716,7 @@ var render = function() {
                     "border-yellow-500 bg-yellow-500 hover:bg-yellow-600 focus:border-yellow-500",
                   nativeOn: {
                     click: function($event) {
-                      return _vm.editElement(_vm.item.id)
+                      return _vm.editElement()
                     }
                   }
                 },
@@ -47736,7 +47757,7 @@ var render = function() {
                     "border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500",
                   nativeOn: {
                     click: function($event) {
-                      return _vm.deleteElement(_vm.item.id)
+                      return _vm.deleteElement(_vm.item)
                     }
                   }
                 },

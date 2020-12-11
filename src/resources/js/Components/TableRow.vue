@@ -31,7 +31,7 @@
       </a>
       <jet-button v-if="!this.showEditForm"
                   class="border-yellow-500 bg-yellow-500 hover:bg-yellow-600 focus:border-yellow-500"
-                  @click.native="editElement(item.id)"><i class="far fa-edit"></i>
+                  @click.native="editElement()"><i class="far fa-edit"></i>
       </jet-button>
       <jet-button v-else class="border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500"
                   @click.native="updateElement(form)"><i class="far fa-save"></i>
@@ -41,7 +41,7 @@
                   @click.native="cancelElement"><i class="fas fa-times"></i>
       </jet-button>
       <jet-button v-else class="border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
-                  @click.native="deleteElement(item.id)"><i class="far fa-trash-alt"></i>
+                  @click.native="deleteElement(item)"><i class="far fa-trash-alt"></i>
       </jet-button>
     </table-cell>
   </tr>
@@ -81,13 +81,14 @@ export default {
       this.form.put('/url/' + data.id, data, {
         preserveScroll: true,
       }).then(() => {
-        console.log(this.form)
         if (!this.form.error('active') && !this.form.error('redirect_url')) {
           this.showEditForm = false;
         }
       })
     },
     deleteElement: function (data) {
+      data._method = 'DELETE';
+      this.$inertia.post('/url/' + data.id, data)
     },
     editElement: function () {
       this.setForm();

@@ -78,7 +78,7 @@ class UrlController extends Controller
     {
         if ($request->has('id')) {
             Url::find($request->input('id'))->delete();
-            return redirect()->back();
+            return redirect()->back()->with('message', 'Url Deleted Successfully.');
         }
     }
 

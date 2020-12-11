@@ -2,6 +2,13 @@
   <div class="sm:px-20 bg-white border-b border-gray-200">
     <div class="mb-4 flex flex-col my-2">
       <div class="mt-4">
+        <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md my-3" role="alert" v-if="$page.flash.message">
+          <div class="flex">
+            <div>
+              <p class="text-sm">{{ $page.flash.message }}</p>
+            </div>
+          </div>
+        </div>
 
         <jet-form-section @submitted="save(form)">
           <template #title>
@@ -12,24 +19,21 @@
             <div class="col-span-1 mb-4 md:mb-0">
               <jet-label for="tag" value="Tag:"/>
               <jet-input id="tag" type="text" class="mt-1 block w-full" v-model="form.tag" ref="tag"/>
-              <jet-input-error :message="form.error('tag')" class="mt-2" />
+              <jet-input-error :message="$page.errors.tag ? $page.errors.tag[0]: null"></jet-input-error>
             </div>
 
             <div class="col-span-1">
               <jet-label for="redirect_url" value="Redirect To:"/>
               <jet-input id="redirect_url" type="text" class="mt-1 block w-full" v-model="form.redirect_url"
                          ref="redirect_url"/>
-              <jet-input-error :message="form.error('redirect_url')" class="mt-2" />
+              <jet-input-error :message="$page.errors.redirect_url ? $page.errors.redirect_url[0]: null"></jet-input-error>
             </div>
           </template>
 
           <template #actions>
-            <jet-action-message :on="form.recentlySuccessful" class="mr-3">
-              {{ $page.flash.message }}
-            </jet-action-message>
-
             <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-              <i class="fas fa-plus mr-1"></i> Add
+              <i v-if="form.processing" class="fas fa-spinner fa-spin"></i>
+              <i v-else class="fas fa-plus mr-1"></i> Add
             </jet-button>
           </template>
         </jet-form-section>
@@ -75,8 +79,9 @@ export default {
       }
     },
     save: function (data) {
-      this.$inertia.post('/url', data);
-      this.reset();
+      this.form.post('/url', data).then(()=>{
+        this.reset();
+      })
     },
   },
 }
