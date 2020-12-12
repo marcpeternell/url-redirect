@@ -23,7 +23,7 @@
             </div>
 
             <div class="col-span-1">
-              <jet-label for="destination" value="Redirect To:"/>
+              <jet-label for="destination" value="Destination:"/>
               <jet-input id="destination" type="text" class="mt-1 block w-full" v-model="form.destination"
                          ref="destination"/>
               <jet-input-error :message="$page.errors.destination ? $page.errors.destination[0]: null"></jet-input-error>

@@ -13,6 +13,9 @@
       <slot>Status</slot>
     </table-head-item>
     <table-head-item class="text-center">
+      <slot>Visits</slot>
+    </table-head-item>
+    <table-head-item class="text-center">
       <slot>Actions</slot>
     </table-head-item>
   </tr>

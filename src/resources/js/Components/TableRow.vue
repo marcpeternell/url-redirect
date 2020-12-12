@@ -26,6 +26,11 @@
         <jet-input-error :message="form.error('active')" class="mt-2"/>
       </div>
     </table-cell>
+    <table-cell>
+      <div class="text-center">
+        {{ entry.visits }}
+      </div>
+    </table-cell>
     <table-cell class="text-center">
       <a class="mx-1 py-4 bg-teal-500 hover:bg-teal-600 focus:border-teal-500 inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest focus:outline-none focus:border-teal-900 focus:shadow-outline-teal transition ease-in-out duration-150"
          :href="entry.qr_code" download>
