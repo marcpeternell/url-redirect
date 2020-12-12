@@ -44,33 +44,15 @@
                   class="mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
                   @click.native="cancelElement"><i class="fas fa-times"></i>
       </jet-button>
-      <jet-button v-if="this.showEditForm" class="mx-1 py-4 border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500"
+      <jet-button v-if="this.showEditForm"
+                  class="mx-1 py-4 border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500"
                   @click.native="updateElement(form)"><i class="far fa-save"></i>
       </jet-button>
       <jet-button v-else class="mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
-                  @click.native="confirmEntryDeletion"><i class="far fa-trash-alt"></i>
+                  @click.native="confirmEntryDeletion(form)"><i class="far fa-trash-alt"></i>
       </jet-button>
     </table-cell>
-    <jet-dialog-modal :show="confirmingEntryDeletion" @close="confirmingEntryDeletion = false">
-      <template #title>
-        Delete Entry
-      </template>
 
-      <template #content>
-        Are you sure you want to delete this entry? Once it is deleted, all of its resources and data will be deleted.
-      </template>
-
-      <template #footer>
-        <jet-secondary-button @click.native="confirmingEntryDeletion = false">
-          Nevermind
-        </jet-secondary-button>
-
-        <jet-danger-button class="ml-2" @click.native="deleteElement(entry)" :class="{ 'opacity-25': form.processing }"
-                           :disabled="form.processing">
-          Delete Entry
-        </jet-danger-button>
-      </template>
-    </jet-dialog-modal>
   </tr>
 </template>
 <script>
@@ -81,9 +63,6 @@ import JetButton from "@/Jetstream/Button";
 import JetInput from "@/Jetstream/Input";
 import JetInputError from "@/Jetstream/InputError";
 import InputToggle from "@/Components/InputToggle"
-import JetSecondaryButton from '@/Jetstream/SecondaryButton'
-import JetDangerButton from '@/Jetstream/DangerButton'
-import JetDialogModal from '@/Jetstream/DialogModal'
 
 export default {
   name: "TableRow",
@@ -95,9 +74,7 @@ export default {
     JetInput,
     JetInputError,
     InputToggle,
-    JetSecondaryButton,
-    JetDangerButton,
-    JetDialogModal
+
   },
   data() {
     return {
@@ -107,7 +84,6 @@ export default {
         destination: '',
         active: ''
       }),
-      confirmingEntryDeletion: false,
     }
   },
   methods: {
@@ -119,18 +95,6 @@ export default {
           this.showEditForm = false;
         }
       })
-    },
-    deleteElement: function (data) {
-      data._method = 'DELETE';
-      this.$inertia.post('/url/' + data.id, data)
-    },
-
-    confirmEntryDeletion() {
-      this.confirmingEntryDeletion = true;
-
-      setTimeout(() => {
-        this.$refs.password.focus()
-      }, 250)
     },
     editElement: function () {
       this.setForm();
@@ -152,6 +116,9 @@ export default {
       }
 
       return str;
+    },
+    confirmEntryDeletion(){
+      this.$emit('confirmEntryDeletion', this.form);
     }
   },
   computed: {}
