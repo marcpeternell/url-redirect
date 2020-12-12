@@ -10,7 +10,7 @@ update-dep:
 	@docker-compose exec app composer update && docker-compose exec app composer install
 
 start:
-	@make url && make ssh
+	@docker-compose up -d && make url && make ssh
 
 stop:
 	@docker-compose stop

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::resource('/', DashboardController::class)->only([
+        'index'
+    ]);
+    Route::resource('url', UrlController::class);
+    Route::get('tag/{tag}', [UrlController::class, 'tag']);
 });
