@@ -15,7 +15,7 @@
           class="bg-white overflow-hidden shadow-xl sm:rounded-lg bg-white overflow-hidden shadow-xl sm:rounded-lg sm:px-20 sm:py-10 bg-white border-b border-gray-200">
         <table-search-bar :data="urls.data"></table-search-bar>
         <entry-list :entries="urls.data"></entry-list>
-        <pagination v-if="urls.data.length > 0" class="px-8 py-4 justify-center" :pagination="urls.links"></pagination>
+        <pagination v-if="urls.data.length > 0 && urls.last_page !== 1" class="px-8 py-4 justify-center" :pagination="urls.links"></pagination>
       </div>
     </div>
   </app-layout>

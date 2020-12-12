@@ -23,7 +23,7 @@ class UrlFactory extends Factory
     public function definition()
     {
         return [
-            'tag' => $this->faker->firstName,
+            'tag' => $this->faker->unique()->firstName,
             'destination' => $this->faker->unique()->url,
             'qr_code' => $this->faker->unique()->imageUrl(),
             'visits' => $this->faker->numberBetween(1, 100),
