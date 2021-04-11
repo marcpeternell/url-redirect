@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ShareController;
 use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,4 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 });
 
 Route::get('tag/{tag}', [UrlController::class, 'tag']);
+Route::resource('shared/{shared}', ShareController::class);

@@ -1,6 +1,5 @@
 <template>
   <tr>
-    <table-cell>#{{ entry.id }}</table-cell>
     <table-cell>
       <div>
         {{ entry.tag }}
@@ -50,6 +49,9 @@
       </jet-button>
       <jet-button v-else class="mx-1 py-4 border-red-500 bg-red-500 hover:bg-red-600 focus:border-red-500"
                   @click.native="confirmEntryDeletion(form)"><i class="far fa-trash-alt"></i>
+      </jet-button>
+      <jet-button class="mx-1 py-4 border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500"
+                  @click.native="confirmEntryDeletion(form)"><i class="far fa-share-square"></i>
       </jet-button>
     </table-cell>
 

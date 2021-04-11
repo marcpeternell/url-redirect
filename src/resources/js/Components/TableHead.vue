@@ -1,9 +1,6 @@
 <template>
   <tr>
     <table-head-item>
-      <slot>Id</slot>
-    </table-head-item>
-    <table-head-item>
       <slot>Tag</slot>
     </table-head-item>
     <table-head-item>
