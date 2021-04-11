@@ -14,7 +14,7 @@ class CreateUrlsTable extends Migration
     public function up()
     {
         Schema::create('urls', function (Blueprint $table) {
-            $table->id();
+            $table->char('id', 26)->primary();
             $table->string('tag')->unique();
             $table->text('destination');
             $table->string('qr_code')->unique();
