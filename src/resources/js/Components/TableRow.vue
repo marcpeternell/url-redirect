@@ -51,7 +51,7 @@
                   @click.native="confirmEntryDeletion(form)"><i class="far fa-trash-alt"></i>
       </jet-button>
       <jet-button class="mx-1 py-4 border-green-500 bg-green-500 hover:bg-green-600 focus:border-green-500"
-                  @click.native="confirmEntryDeletion(form)"><i class="far fa-share-square"></i>
+                  @click.native="shareEntry(entry.id)"><i class="far fa-share-square"></i>
       </jet-button>
     </table-cell>
 
@@ -119,9 +119,68 @@ export default {
 
       return str;
     },
-    confirmEntryDeletion(){
+    confirmEntryDeletion() {
       this.$emit('confirmEntryDeletion', this.form);
-    }
+    },
+    shareEntry(entryId) {
+      const sharedUrl = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/shared/' + entryId
+      this.copyTextToClipboard(sharedUrl);
+    },
+
+    fallbackCopyTextToClipboard(text) {
+      let textArea = document.createElement("textarea");
+      textArea.value = text;
+
+      // Avoid scrolling to bottom
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        let successful = document.execCommand('copy');
+        let msg = successful ? 'erfolgreich' : 'nicht erfolgreich';
+        this.$swal({
+          icon: 'success',
+          title: 'Link wurde ' + msg + ' Zwischenablage hinzugefügt',
+          text: 'Link: ' + text,
+        })
+      } catch (err) {
+        this.$swal({
+          icon: 'success',
+          title: 'Link wurde ' + msg + ' Zwischenablage hinzugefügt',
+          text: err,
+        })
+      }
+
+      document.body.removeChild(textArea);
+    },
+
+    copyTextToClipboard(text) {
+      if (!navigator.clipboard) {
+        this.fallbackCopyTextToClipboard(text);
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => {
+        this.$swal({
+          icon: 'success',
+          title: 'Link zur Zwischenablage hinzugefügt',
+          text: 'Link: ' + text,
+        })
+      }, (err) => {
+        this.$swal({
+          icon: 'success',
+          title: 'Leider ist ein Fehler aufgetreten',
+          text: err,
+        })
+      });
+    },
+
+
+
   },
   computed: {}
 }

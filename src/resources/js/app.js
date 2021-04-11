@@ -7,11 +7,16 @@ import Vue from 'vue';
 import { InertiaApp } from '@inertiajs/inertia-vue';
 import { InertiaForm } from 'laravel-jetstream';
 import PortalVue from 'portal-vue';
+import VueSweetalert2 from 'vue-sweetalert2';
 
 Vue.mixin({ methods: { route } });
 Vue.use(InertiaApp);
 Vue.use(InertiaForm);
 Vue.use(PortalVue);
+
+Vue.use(VueSweetalert2);
+
+Vue.use(VueSweetalert2);
 
 const app = document.getElementById('app');
 

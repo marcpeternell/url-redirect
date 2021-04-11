@@ -24,4 +24,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 });
 
 Route::get('tag/{tag}', [UrlController::class, 'tag']);
-Route::resource('shared/{shared}', ShareController::class);
+Route::resource('shared/{shared}', ShareController::class)->only([
+    'index', 'update'
+]);
