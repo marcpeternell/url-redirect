@@ -8,7 +8,6 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Response\QrCodeResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -36,7 +35,7 @@ class UrlController extends Controller
     {
         Validator::make($request->all(), $this->rules)->validate();
 
-        $qrUrl = url('/tag') . '/' .$request->tag;
+        $qrUrl = url('/tag') . '/' . $request->tag;
 
         $path = $this->generateQR($qrUrl, $request->tag);
 
@@ -48,62 +47,6 @@ class UrlController extends Controller
 
         return redirect()->back()
             ->with('message', 'Url Created Successfully.');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param Request $request
-     * @return RedirectResponse
-     * @throws ValidationException|ValidationException
-     */
-    public function update(Request $request)
-    {
-        Validator::make($request->all(), $this->updateRules)->validate();
-
-        if ($request->has('id')) {
-            Url::find($request->input('id'))->update([
-                'active' => $request->active,
-                'destination' => $request->destination
-            ]);
-            return redirect()->back()
-                ->with('message', 'Url Updated Successfully.');
-        }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function destroy(Request $request)
-    {
-        if ($request->has('id')) {
-            Url::find($request->input('id'))->delete();
-            return redirect()->back()->with('message', 'Url Deleted Successfully.');
-        }
-    }
-
-    /**
-     * Redirect incoming urls do destination url
-     *
-     * @param $tag
-     * @return RedirectResponse
-     */
-    public function tag($tag)
-    {
-        $urlQuery = Url::where('tag', $tag)->where('active', true);
-
-        if (empty($urlQuery->first())) {
-            abort(404);
-        }
-
-        $urlQuery->update([
-            'visits' => DB::raw('visits+1'),
-        ]);
-
-        return redirect()->away($urlQuery->first()->destination);
     }
 
     /**
@@ -139,6 +82,41 @@ class UrlController extends Controller
         $qrCode->writeFile(public_path($path));
 
         return $path;
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws ValidationException|ValidationException
+     */
+    public function update(Request $request)
+    {
+        Validator::make($request->all(), $this->updateRules)->validate();
+
+        if ($request->has('id')) {
+            Url::find($request->input('id'))->update([
+                'active' => $request->active,
+                'destination' => $request->destination
+            ]);
+            return redirect()->back()
+                ->with('message', 'Url Updated Successfully.');
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function destroy(Request $request)
+    {
+        if ($request->has('id')) {
+            Url::find($request->input('id'))->delete();
+            return redirect()->back()->with('message', 'Url Deleted Successfully.');
+        }
     }
 
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UrlController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,10 +21,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::resource('/', DashboardController::class)->only([
         'index'
     ]);
-    Route::resource('url', UrlController::class);
+    Route::resource('url', UrlController::class)->only([
+        'store' , 'update', 'destroy'
+    ]);
 });
 
-Route::get('tag/{tag}', [UrlController::class, 'tag']);
+Route::get('tag/{tag}', [TagController::class, 'tag']);
 Route::resource('shared/{shared}', ShareController::class)->only([
     'index', 'update'
 ]);
