@@ -28,6 +28,12 @@ app/storage/
 # Laravel 5 & Lumen specific
 public/storage
 public/hot
+public/css
+public/images/icons
+public/images/qr_code
+public/js
+public/mix-manifest.json
+resources/assets/webfonts
 storage/*.key
 Homestead.yaml
 Homestead.json
